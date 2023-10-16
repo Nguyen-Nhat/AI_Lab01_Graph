@@ -23,7 +23,7 @@ class Node:
         self.draw(sc)
 
         # change the speed here
-        pygame.time.delay(150)
+        pygame.time.delay(50)
         pygame.display.update()
 
 class SearchSpace:
