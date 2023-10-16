@@ -5,4 +5,4 @@
 3. python main.py --algo UCS
 4. python main.py --algo AStar
 
-Video demo: click [here]()
+Video demo: click [here](https://www.youtube.com/watch?v=x57dVm-O6SA)
