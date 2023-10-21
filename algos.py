@@ -58,6 +58,15 @@ def BFS(g: SearchSpace, sc: pygame.Surface):
                 open_set.append((neighbor.id,id))
                 if neighbor.id not in closed_set:
                     neighbor.set_color(RED,sc)
+def calculateGValue(idParent, id) -> float:
+    xParent, yParent = idParent // COLS, idParent % COLS
+    x,y = id // COLS, id//COLS
+    dx = abs(x - xParent)
+    dy = abs(y - yParent)
+    if dx + dy == 1: 
+        return 1
+    else:
+        return math.sqrt(2) 
 def UCS(g: SearchSpace, sc: pygame.Surface):
     open_set = queue.PriorityQueue()
     open_set.put((0, g.start.id))
@@ -85,8 +94,9 @@ def UCS(g: SearchSpace, sc: pygame.Surface):
             return
         neighbors = g.get_neighbors(node)
         for neighbor in neighbors:
-            if(cost[neighbor.id] > cost[id] + 1): 
-                cost[neighbor.id] = cost[id] + 1
+            d = calculateGValue(node.id, neighbor.id)
+            if(cost[neighbor.id] > cost[id] + d): 
+                cost[neighbor.id] = cost[id] + d
                 open_set.put((cost[neighbor.id], neighbor.id))
                 fathers[neighbor.id] = id
                 neighbor.set_color(RED,sc)
@@ -121,8 +131,9 @@ def AStar(g: SearchSpace, sc: pygame.Surface):
                 g.start.set_color(ORANGE,sc)
             return
         neighbors = g.get_neighbors(node)
-        for neighbor in neighbors: 
-            temp = cost[id] - calculateHValue(id,g.goal.id) + 1 + calculateHValue(neighbor.id, g.goal.id)
+        for neighbor in neighbors:
+            d = calculateGValue(node.id, neighbor.id) 
+            temp = cost[id] - calculateHValue(id,g.goal.id) + d + calculateHValue(neighbor.id, g.goal.id)
             if(cost[neighbor.id] > temp):
                 cost[neighbor.id] = temp
                 open_set.put((temp,neighbor.id))
